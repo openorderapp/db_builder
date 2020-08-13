@@ -31,33 +31,48 @@ exports.seed = function (knex) {
   const number_of_customers_to_seed = 100;
   let customer_records = [];
 
-  return knex("work_orders")
-    .del()
-    .then(() => {
-      return knex("customers").del();
-    })
-    .then(() => {
-      // Create customer entries
-      customer_records.push(
-        ...generate_customer_records(knex, number_of_customers_to_seed)
-      );
-      return Promise.all(customer_records);
-    })
-    .then(() => {
-      // Select last customer_id
-      return knex
-        .select("customer_id")
-        .from("customers")
-        .orderBy("customer_id", "desc")
-        .limit(1);
-    })
-    .then((results) => {
-      const last_customer_id = results[0]["customer_id"];
-      // Update sequence value
-      return knex.schema.raw(
-        `ALTER SEQUENCE customers_customer_id_seq RESTART WITH ${
-          last_customer_id + 1
-        }`
-      );
-    });
-};
+  const
+    delete_work_orders_promise = knex("work_orders").del(),
+    delete_work_order_events_promise = knex("work_order_events").del(),
+    delete_work_order_products_promise = knex("work_order_products").del(),
+    delete_work_order_product_responses_promise = knex("work_order_product_responses").del()
+
+  return delete_work_order_product_responses_promise.then(() => {
+
+    return delete_work_order_products_promise
+
+  }).then(() => {
+
+    return delete_work_order_events_promise
+
+  }).then(() => {
+
+    return delete_work_orders_promise
+
+  }).then(() => {
+
+    return knex("customers").del();
+
+  }).then(() => {
+    // Create customer entries
+    customer_records.push(
+      ...generate_customer_records(knex, number_of_customers_to_seed)
+    );
+    return Promise.all(customer_records);
+  }).then(() => {
+    // Select last customer_id
+    return knex
+      .select("customer_id")
+      .from("customers")
+      .orderBy("customer_id", "desc")
+      .limit(1);
+  }).then((results) => {
+    const last_customer_id = results[0]["customer_id"];
+    // Update sequence value
+    return knex.schema.raw(
+      `ALTER SEQUENCE customers_customer_id_seq RESTART WITH ${
+      last_customer_id + 1
+      }`
+    )
+  })
+}
