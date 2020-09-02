@@ -50,7 +50,6 @@ exports.up = function (knex) {
         table.integer('work_order_id').unsigned()
         table.integer('event_id').unsigned()
         table.integer('employee_id').unsigned()
-        table.text('comments')
   
         table.timestamp('created_at').defaultTo(knex.fn.now())
         table.timestamp('updated_at').defaultTo(knex.fn.now())
@@ -117,6 +116,18 @@ exports.up = function (knex) {
           .foreign('product_question_id')
           .references('product_questions.product_question_id')
       })
+
+      .createTable('comments', (table) => {
+        table.increments('comment_id')
+        table.text('comment_text')
+
+        table.timestamp('created_at').defaultTo(knex.fn.now())
+        table.timestamp('updated_at').defaultTo(knex.fn.now())
+
+        table
+          .foreign('work_order_event_id')
+          .references('work_order_events.work_order_event_id')
+      })
   }
   
   exports.down = function (knex) {
@@ -130,5 +141,6 @@ exports.up = function (knex) {
       .dropTable('work_orders')
       .dropTable('employees')
       .dropTable('customers')
+      .dropTable('comments')
   }
   
