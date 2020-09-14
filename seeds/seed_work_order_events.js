@@ -67,12 +67,12 @@ const run_seed = (knex) => {
   //Promise to delete from work_order_events
   const work_order_events_delete_promise = knex("work_order_events").del();
 
-     // Promise to select values from work_orders
-     const work_order_ids_select_promise = select_column_from_table(
-        knex,
-        "work_order_id",
-        "work_orders"
-      );
+  // Promise to select values from work_orders
+  const work_order_ids_select_promise = select_column_from_table(
+    knex,
+    "work_order_id",
+    "work_orders"
+  );
 
   // Promise to select values from events
   const event_ids_select_promise = select_column_from_table(
@@ -88,12 +88,12 @@ const run_seed = (knex) => {
     "employees"
   );
 
- 
+
 
   // Begin by using a promise to delete work_order_events table data
   return work_order_events_delete_promise
 
-   
+
     .then(() => {
       //then use promise to select work_orders_ids in an array
       return work_order_ids_select_promise;
@@ -111,9 +111,9 @@ const run_seed = (knex) => {
       return employee_ids_select_promise
     })
     .then((employee_ids_select_response) => {
-        //Assign the response to a variable
-        employee_ids = employee_ids_select_response;
-      })
+      //Assign the response to a variable
+      employee_ids = employee_ids_select_response;
+    })
     .then(() => {
       // generate the required number of records, and insert their data
       work_order_event_records.push(
@@ -140,8 +140,7 @@ const run_seed = (knex) => {
       const last_work_order_event_id = results[0]["work_order_event_id"];
       // Update sequence value
       return knex.schema.raw(
-        `ALTER SEQUENCE work_order_events_work_order_event_id_seq RESTART WITH ${
-          last_work_order_event_id + 1
+        `ALTER SEQUENCE work_order_events_work_order_event_id_seq RESTART WITH ${last_work_order_event_id + 1
         }`
       );
     });
@@ -151,8 +150,8 @@ const run_seed = (knex) => {
 module.exports.run_seed = run_seed
 
 
-exports.seed = function(knex) {
+exports.seed = function (knex) {
 
-    return run_seed(knex)
+  return run_seed(knex)
 
 };
