@@ -56,7 +56,6 @@ const create_work_order_event_record = (knex, id) => {
     work_order_id: work_order_ids[random_work_order_ids_index],
     event_id: event_ids[random_event_ids_index],
     employee_id: employee_ids[random_employee_ids_index],
-    comments: faker.lorem.text(),
     created_at: new Date(),
     updated_at: new Date(),
   });
@@ -150,7 +149,7 @@ const run_seed = (knex) => {
 module.exports.run_seed = run_seed
 
 
-exports.seed = function (knex) {
+exports.seed = (knex) => {
 
   return run_seed(knex)
 

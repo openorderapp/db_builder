@@ -1,15 +1,15 @@
-const faker = require('faker');
+const faker = require('faker')
 
-const number_of_employees_to_seed = 100;
+const number_of_employees_to_seed = 100
 
-const generate_employee_records = (knex, number_of_employees_to_seed) => {
+const generate_employee_records = (knex) => {
 
     let records = [];
 
     for (let employee_id = 1; (employee_id - 1) < number_of_employees_to_seed; employee_id++) {
-        records.push(create_employee_record(knex, employee_id));
+        records.push(create_employee_record(knex, employee_id))
     }
-    return records;
+    return records
 }
 
 const create_employee_record = (knex, id) => {
@@ -25,21 +25,19 @@ const create_employee_record = (knex, id) => {
         employee_is_admin: faker.random.boolean(),
         created_at: new Date(),
         updated_at: new Date()
-    });
+    })
 }
 
-exports.seed = function(knex) {
-
-    let employee_records = [];
+const run_seed = (knex) => {
 
     return knex('work_order_events').del().then(() => {
 
         return knex('employees').del();
 
     }).then(() => {
-        
+
         // Create employee entries
-        employee_records.push(...generate_employee_records(knex, number_of_employees_to_seed));
+        let employee_records = generate_employee_records(knex)
         return Promise.all(employee_records);
 
     }).then(() => {
@@ -54,4 +52,12 @@ exports.seed = function(knex) {
         return knex.schema.raw(`ALTER SEQUENCE employees_employee_id_seq RESTART WITH ${last_employee_id + 1}`);
 
     })
-};
+}
+
+module.exports.run_seed = run_seed
+
+exports.seed = (knex) => {
+
+    return run_seed(knex)
+
+}

@@ -66,7 +66,7 @@ const create_work_order_product_response_record = (knex, id) => {
       work_order_product_ids[random_work_order_product_ids_index],
     product_question_id:
       product_question_ids[random_product_question_ids_index],
-    response_text: faker.lorem.text(25),
+    response_text: faker.company.bs(),
     is_complete: faker.random.boolean(),
     created_at: new Date(),
     updated_at: new Date(),
@@ -75,18 +75,18 @@ const create_work_order_product_response_record = (knex, id) => {
 
 const run_seed = (knex) => {
   // let work_order_product_response records = []
-  
+
 
   //Promise to delete from work_order_product_responses
   const work_order_product_responses_delete_promise = knex(
     "work_order_product_responses"
   ).del();
 
-   // Promise to select values from product_questions
-   const product_question_ids_select_promise = select_column_from_table(knex, "work_order_id", "work_orders")
+  // Promise to select values from product_questions
+  const product_question_ids_select_promise = select_column_from_table(knex, "product_question_id", "product_questions")
 
-      // Promise to select values from work_order_products
-	  const work_order_product_ids_select_promise = select_column_from_table(knex, "work_order_product_id", "work_order_products")
+  // Promise to select values from work_order_products
+  const work_order_product_ids_select_promise = select_column_from_table(knex, "work_order_product_id", "work_order_products")
 
   // Begin by using a promise to delete work_order_product_responses table data
   return work_order_product_responses_delete_promise
@@ -131,8 +131,7 @@ const run_seed = (knex) => {
       const last_work_order_product_response_id = results[0]["work_order_product_response_id"];
       // Update sequence value
       return knex.schema.raw(
-        `ALTER SEQUENCE work_order_product_responses_work_order_product_response_id_seq RESTART WITH ${
-          last_work_order_product_response_id + 1
+        `ALTER SEQUENCE work_order_product_responses_work_order_product_response_id_seq RESTART WITH ${last_work_order_product_response_id + 1
         }`
       );
     });
@@ -141,8 +140,8 @@ const run_seed = (knex) => {
 module.exports.run_seed = run_seed
 
 
-exports.seed = function(knex) {
+exports.seed = (knex) => {
 
-    return run_seed(knex)
+  return run_seed(knex)
 
 };

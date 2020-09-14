@@ -31,7 +31,7 @@ const create_work_order_event_comment_record = (knex, id) => {
   return knex("work_order_event_comments").insert({
     work_order_event_comment_id: id,
     work_order_event_id: random_work_order_event_id,
-    work_order_event_comment: faker.finance.transactionDescription(),
+    work_order_event_comment: faker.company.catchPhrase(),
     created_at: new Date(),
     updated_at: new Date(),
   })
@@ -91,4 +91,4 @@ exports.seed = function (knex) {
 
   return run_seed(knex)
 
-};
+}

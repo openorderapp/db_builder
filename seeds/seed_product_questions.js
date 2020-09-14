@@ -76,7 +76,7 @@ const run_seed = (knex) => {
 
 module.exports.run_seed = run_seed
 
-exports.seed = function(knex) {
+exports.seed = (knex) => {
 
     return run_seed(knex)
 }

@@ -1,3 +1,7 @@
+// TODO:
+// Fix implementation
+// Would be nice to have a delete data function for each seeder that we can just call here
+
 exports.seed = function (knex) {
   // Deletes ALL existing entries
   return knex("product_questions")
