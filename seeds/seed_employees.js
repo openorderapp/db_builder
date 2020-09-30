@@ -19,7 +19,7 @@ const create_employee_record = (knex, id) => {
         employee_last_name: faker.name.lastName(),
         employee_email: faker.internet.email(),
         employee_phone: faker.phone.phoneNumber(),
-        employee_user_name: faker.internet.userName(),
+        employee_username: faker.internet.userName(),
         employee_password_hash: faker.internet.password(),
         employee_password_salt: faker.internet.password(),
         employee_is_admin: faker.random.boolean(),
