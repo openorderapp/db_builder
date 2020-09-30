@@ -23,7 +23,15 @@ const create_event_record = (knex, id) => {
 
 const run_seed = (knex) => {
 
-    return knex('work_order_events').del().then(() => {
+    const 
+        delete_work_order_events_promise = knex("work_order_events").del(),
+        delete_work_order_event_comments_promise = knex("work_order_event_comments").del()
+
+    return delete_work_order_event_comments_promise.then(() => {
+
+        return delete_work_order_events_promise
+    
+    }).then(() => {
 
         return knex('events').del();
 

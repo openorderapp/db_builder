@@ -8,20 +8,13 @@ const
 const run_seed = (knex) => {
 
   return Promise.all([
+    
     seed_customers.run_seed(knex),
     seed_employees.run_seed(knex),
     seed_events.run_seed(knex),
     seed_all_product_entities.run_seed(knex)
+
   ]).then(() => {
-
-    return Promise.all([
-      seed_customers.run_seed(knex),
-      seed_employees.run_seed(knex),
-      seed_events.run_seed(knex),
-      seed_all_product_entities.run_seed(knex)
-    ])
-
-  }).then(() => {
 
     return seed_all_work_order_entities.run_seed(knex)
 

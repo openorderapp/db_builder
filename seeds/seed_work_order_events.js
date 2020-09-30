@@ -63,9 +63,6 @@ const create_work_order_event_record = (knex, id) => {
 
 const run_seed = (knex) => {
 
-  //Promise to delete from work_order_events
-  const work_order_events_delete_promise = knex("work_order_events").del();
-
   // Promise to select values from work_orders
   const work_order_ids_select_promise = select_column_from_table(
     knex,
@@ -90,10 +87,16 @@ const run_seed = (knex) => {
 
 
   // Begin by using a promise to delete work_order_events table data
-  return work_order_events_delete_promise
+  const 
+        delete_work_order_events_promise = knex("work_order_events").del(),
+        delete_work_order_event_comments_promise = knex("work_order_event_comments").del()
 
+    return delete_work_order_event_comments_promise.then(() => {
 
-    .then(() => {
+        return delete_work_order_events_promise
+    
+    }).then(() => {
+
       //then use promise to select work_orders_ids in an array
       return work_order_ids_select_promise;
     })
